@@ -6,6 +6,7 @@ import time
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn import svm
 from sklearn.metrics import classification_report
+from sklearn.externals import joblib
 
 
 
@@ -29,6 +30,22 @@ class MrSenti:
 
 		self.classifier = svm.SVC()
 
+
+	def load_model(self, model_name = 'mr-senti'):
+
+		try:
+			classifier= joblib.load(os.path.join('model', model_name + '.pkl'))
+		except FileNotFoundError:
+			return False
+
+		self.classifier= classifier
+
+		return True
+
+
+	def save(self, model_name = 'mr-senti'):
+
+		joblib.dump(self.classifier, os.path.join('model', model_name + '.pkl'))
 
 
 	def load_dataset(self, root = 'datasets', classes = [ 'pos', 'neg' ]):
@@ -66,6 +83,8 @@ class MrSenti:
 
 	def train(self):
 
+		print('Training');
+
 		return self.classifier.fit(self.training_set_vector, self.training_labels)
 
 
@@ -83,10 +102,17 @@ senti= MrSenti()
 
 senti.load_dataset()
 
-senti.train()
+wasLoadedModel= senti.load_model()
+
+if(not wasLoadedModel):
+	senti.train()
 
 prediction = senti.test()
 
 print(classification_report(senti.testing_labels, prediction))
+
+if(not wasLoadedModel):
+	senti.save()
+
 
 
