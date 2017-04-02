@@ -1,7 +1,17 @@
 
 import json
 import os
-from flask import render_template, make_response
+from flask import render_template, make_response, request
+from libs.MrSenti import MrSenti
+
+senti= MrSenti()
+
+senti.load_dataset()
+
+wasLoadedModel= senti.load_model()
+
+if(not wasLoadedModel):
+	senti.train()
 
 def initialize_routes(app):
 
@@ -12,11 +22,19 @@ def initialize_routes(app):
 	@app.route('/api/analyse', methods= [ 'GET' ])
 	def api_route():
 
-		jsonResponse = json.dumps({
-			'hello': 'world'
-		})
+		inputStr= request.args.get('text')
 
-		response= make_response(jsonResponse, 200)
+		label= senti.test([ inputStr ], False)
+
+		jsonResponse= {
+			'hello': 'world',
+			'input': inputStr,
+			'output': label[0]
+		}
+
+		jsonResponseString = json.dumps(jsonResponse)
+
+		response= make_response(jsonResponseString, 200)
 		response.headers['Content-Type'] = 'application/json'
 
 		return response
