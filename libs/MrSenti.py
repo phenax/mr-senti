@@ -1,5 +1,6 @@
 
 import os
+import math
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn import svm
@@ -33,7 +34,7 @@ class MrSenti:
 		)
 
 		# Classifier instance
-		self.classifier = svm.SVC()
+		self.classifier = svm.LinearSVC()
 
 
 	def load_model(self, model_name = 'mr-senti'):
@@ -156,4 +157,21 @@ class MrSenti:
 			print(classification_report(labels, prediction))
 
 		return prediction
+
+
+	def test_probability(self, dataset = None):
+		"""Test the classifier and return the probabilities
+
+		Keyword Arguments:
+			dataset {List} -- Dataset (default: {None})
+
+		Returns:
+			List -- The probability of predictions made by the classifier
+		"""
+
+		dataset = self.vectorize(dataset) if (dataset != None) else self.testing_set_vector;
+
+		prediction = self.classifier.decision_function(dataset)
+
+		return list(map(lambda p: (1 / (1 + math.exp(-p))), prediction))
 
