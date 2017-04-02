@@ -8,7 +8,12 @@ from sklearn.externals import joblib
 
 
 
+# MrSenti class
 class MrSenti:
+	"""A wrapper class for sentimental analysis with sklearn 
+	
+
+	"""
 
 
 	def __init__(self):
@@ -19,6 +24,7 @@ class MrSenti:
 		self.testing_labels = []
 		self.training_labels = []
 
+		# Text vectorizer
 		self.vectorizer= TfidfVectorizer(
 			min_df = 5,
 			max_df = .8,
@@ -26,10 +32,21 @@ class MrSenti:
 			use_idf = True
 		)
 
+		# Classifier instance
 		self.classifier = svm.SVC()
 
 
 	def load_model(self, model_name = 'mr-senti'):
+		"""Load a model(classifier) if it exists
+		
+		Loads a model(classifier) from ./models and returns operation status
+		
+		Keyword Arguments:
+			model_name {str} -- Model name (default: {'mr-senti'})
+		
+		Returns:
+			bool -- Operation status(True if the model was loaded)
+		"""
 
 		try:
 			classifier= joblib.load(os.path.join('model', model_name + '.pkl'))
@@ -42,11 +59,26 @@ class MrSenti:
 
 
 	def save(self, model_name = 'mr-senti'):
+		"""Save a model(classifier)
+		
+		Saves a model inside ./models
+		
+		Keyword Arguments:
+			model_name {str} --  Name of the classifier/model (default: {'mr-senti'})
+		"""
 
 		joblib.dump(self.classifier, os.path.join('model', model_name + '.pkl'))
 
 
 	def load_dataset(self, root = 'datasets', classes = [ 'pos', 'neg' ]):
+		"""Load a dataset
+		
+		Loads a dataset from the filesystem into memory
+		
+		Keyword Arguments:
+			root {str} -- Dataset directory relative to project root (default: {'datasets'})
+			classes {list} -- Classes for the classifier to learn about (default: {[ 'pos', 'neg' ]})
+		"""
 
 		for senti_class in classes:
 
@@ -71,6 +103,11 @@ class MrSenti:
 
 
 	def _vectorize(self, vectorizer = None):
+		"""Vectorize the training and testing set
+		
+		Keyword Arguments:
+			vectorizer {TfidfVectorizer} -- Vectorizer instance (default: {None})
+		"""
 
 		vectorizer = vectorizer if vectorizer else self.vectorizer;
 
@@ -80,17 +117,35 @@ class MrSenti:
 
 
 	def vectorize(self, dataset):
+		"""Vectorize a dataset
+		
+		Arguments:
+			dataset {List} -- List to vectorize
+		
+		Returns:
+			Vector -- Transformed list
+		"""
 		return self.vectorizer.transform(dataset)
 
 
 
 	def train(self):
-		print('Training');
-
+		"""Train the classifier
+		"""
 		return self.classifier.fit(self.training_set_vector, self.training_labels)
 
 
 	def test(self, dataset = None, debug = True, labels = None):
+		"""Test the classifier with some data
+		
+		Keyword Arguments:
+			dataset {List} -- Dataset (default: {None})
+			debug {bool} -- Debug mode (default: {True})
+			labels {List} -- List of labels (default: {None})
+		
+		Returns:
+			List -- The predictions made by the classifier
+		"""
 
 		dataset = self.vectorize(dataset) if (dataset != None) else self.testing_set_vector;
 		labels = labels if (labels != None) else self.testing_labels;
