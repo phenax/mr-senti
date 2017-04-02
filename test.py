@@ -81,18 +81,28 @@ class MrSenti:
 		self.testing_set_vector = vectorizer.transform(self.testing_set)
 
 
-	def train(self):
+	def vectorize(self, dataset):
+		return self.vectorizer.transform(dataset)
 
+
+
+	def train(self):
 		print('Training');
 
 		return self.classifier.fit(self.training_set_vector, self.training_labels)
 
 
-	def test(self, dataset = None):
+	def test(self, dataset = None, debug = True, labels = None):
 
-		dataset = dataset if dataset else self.testing_set_vector;
+		dataset = self.vectorize(dataset) if (dataset != None) else self.testing_set_vector;
+		labels = labels if (labels != None) else self.testing_labels;
 
-		return self.classifier.predict(dataset)
+		prediction = self.classifier.predict(dataset)
+
+		if(debug):
+			print(classification_report(labels, prediction))
+
+		return prediction
 
 
 
@@ -107,12 +117,17 @@ wasLoadedModel= senti.load_model()
 if(not wasLoadedModel):
 	senti.train()
 
-prediction = senti.test()
+prediction = senti.test([
+	'This is a great product. I love this product',
+	'This is a product sucks. Very bad.',
+	'This product sucks balls.',
+	'This is fucking great',
+	'Baaad. 2 mny bugs'
+], True, [ 'pos', 'neg', 'neg', 'pos', 'neg' ])
 
-print(classification_report(senti.testing_labels, prediction))
+print(prediction)
 
 if(not wasLoadedModel):
 	senti.save()
-
 
 
