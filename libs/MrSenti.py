@@ -12,7 +12,7 @@ from sklearn.externals import joblib
 class MrSenti:
 	"""A wrapper class for sentimental analysis with sklearn 
 	
-
+	Perform sentiment analysis on a set of strings
 	"""
 
 
