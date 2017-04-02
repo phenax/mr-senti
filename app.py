@@ -10,5 +10,7 @@ ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 initialize_routes(app)
 
+PORT = int(os.environ.get('PORT', 33507))
+
 if __name__ == "__main__":
-	app.run(port = os.environ.get('PORT') if os.environ.get('PORT') else 8080)
+	app.run(host='0.0.0.0', port = PORT)
