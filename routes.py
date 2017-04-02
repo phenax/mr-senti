@@ -8,10 +8,11 @@ senti= MrSenti()
 
 senti.load_dataset()
 
-wasLoadedModel= senti.load_model()
+modelExists= senti.load_model('no_test_prefix')
 
-if(not wasLoadedModel):
+if(not modelExists):
 	senti.train()
+	senti.save()
 
 def initialize_routes(app):
 
@@ -27,9 +28,8 @@ def initialize_routes(app):
 		label= senti.test([ inputStr ], False)
 
 		jsonResponse= {
-			'hello': 'world',
 			'input': inputStr,
-			'output': label[0]
+			'label': label[0]
 		}
 
 		jsonResponseString = json.dumps(jsonResponse)

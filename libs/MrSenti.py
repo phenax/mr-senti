@@ -70,7 +70,7 @@ class MrSenti:
 		joblib.dump(self.classifier, os.path.join('model', model_name + '.pkl'))
 
 
-	def load_dataset(self, root = 'datasets', classes = [ 'pos', 'neg' ]):
+	def load_dataset(self, testPrefix = 'cv9', root = 'datasets', classes = [ 'pos', 'neg' ]):
 		"""Load a dataset
 		
 		Loads a dataset from the filesystem into memory
@@ -90,7 +90,7 @@ class MrSenti:
 
 					content = file.read()
 
-					if filename.startswith('cv9'):
+					if filename.startswith(testPrefix):
 						# Testing data
 						self.testing_set.append(content)
 						self.testing_labels.append(senti_class)
