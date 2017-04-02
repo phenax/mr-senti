@@ -1,5 +1,6 @@
 # Mr Senti
 Sentiment analysis thingy. Not completet yet.
+[Test it out](http://mr-senti.herokuapp.com/)
 
 
 ### Instructions
