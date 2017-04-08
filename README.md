@@ -1,5 +1,5 @@
 # Mr Senti
-Sentiment analysis thingy. Not completet yet.
+Sentiment analysis thingy. Not complete yet.
 [Test it out](http://mr-senti.herokuapp.com/)
 
 [NOTE: The client side is written in ES2015 so if it doesn't work, update your browser or just download one thats less shitty. This is 2017 for fuck's sake.]
