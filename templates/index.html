@@ -3,6 +3,7 @@
 <html>
 <head>
 	<title>MrSenti - Sentiment analysis testing</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
 	<link rel="stylesheet" href="/static/css/bootstrap.min.css" />
 	<style>
 		html, body {
@@ -30,7 +31,10 @@
 			text-align: center;
 		}
 
-		textarea { resize: none; }
+		textarea {
+			resize: none;
+			color: #999;
+		}
 	</style>
 </head>
 <body>
@@ -38,16 +42,18 @@
 <div style='padding: 1em;'>
 	
 	<div class='center-wrapper card' style='padding: 2em;'>
-		<h3 style='padding: 0;'>Sentiment analysis</h3>
+		<h3 style='padding: 0;'>Mr Senti</h3>
 
 		<div class='result'>
-			<div class='js-result-dump'>😐</div>
+			<div class='js-result-dump'>
+				<i class='fa fa-meh-o'></i>
+			</div>
 		</div>
 
 		<form class='js-form-submit'>
 
 			<div class="form-group" style='padding: .5em;'>
-				<label for="textArea" class="control-label">Enter the stuff you want an amoji for</label>
+				<label for="textArea" class="control-label">Enter the stuff you want an emoji for</label>
 				<textarea rows="3" id="textArea" name='text' class='form-control' placeholder='Your shit goes here'></textarea>
 			</div>
 
