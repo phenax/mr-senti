@@ -51,7 +51,10 @@ const analyseSentiment = data =>
 	fetcher('/api/analyse', getOptions(data))
 		.then(resp => resp.json())
 		.then(logger)
-		.then(resp => resp.label === 'pos'? 'smile': 'frown');
+		.then(({ label, probabilities }) => ({
+			icon: label === 'pos'? 'smile': 'frown',
+			score: Math.floor(probabilities.pos * 10000)/100,
+		}));
 
 
 /**
@@ -59,10 +62,13 @@ const analyseSentiment = data =>
  * 
  * @param  {string} icon
  */
-const renderIcon = icon =>
-	$result.innerHTML = `<i class="fa fa-${icon}-o"></i>`;
+const renderIcon = ({icon, score}) =>
+	$result.innerHTML = `<i class="fa fa-${icon}-o"></i><div class="score">Score: ${score}</div>`;
 
 
+
+// Initial render
+renderIcon({ icon: 'meh', score: 0 });
 
 document
 	.querySelector('.js-form-submit')
